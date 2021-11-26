@@ -35,20 +35,16 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
+      - uses: actions/checkout@v2       
+      - uses: azure/setup-helm@v1
       - uses: azure/aks-set-context@v1
         with:
           creds: '${{ secrets.AZURE_CREDENTIALS }}'
           cluster-name: OptimusQ
           resource-group: OptimusQ_demo
+      - run: >
+          helm upgrade --install optimusq -n demo --set deployment.tag=master .helm
 
-      - uses: azure/k8s-bake@v1
-        with:
-          renderEngine: 'helm2'
-          helmChart: './helm' 
-          overrideFiles: './helm/values.yaml'
-          overrides: |     
-            deployment.tag:${{ steps.meta.outputs.tags }}
-          releaseName: optimusq
-        id: bake
+
 
       
