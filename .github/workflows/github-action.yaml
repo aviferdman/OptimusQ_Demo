@@ -41,12 +41,14 @@ jobs:
           cluster-name: OptimusQ
           resource-group: OptimusQ_demo
 
-      - name: deploy postgres to cluster
-        uses: wahyd4/kubectl-helm-action@master
-        env:
-          KUBE_CONFIG_DATA: ${{ secrets.KUBECONFIG }}
-        with:
-          args: |
-            helm upgrade --install optimusq -n demo --set deployment.tag=${{ steps.meta.outputs.tags }} .helm
+      - uses: azure/k8s-bake@v1
+      with:
+        renderEngine: 'helm3'
+        helmChart: './helm' 
+        overrideFiles: './helm/values.yaml'
+        overrides: |     
+          deployment.tag:${{ steps.meta.outputs.tags }}
+        releaseName: optimusq
+      id: bake
 
       
