@@ -43,7 +43,7 @@ jobs:
           cluster-name: OptimusQ
           resource-group: OptimusQ_demo
       - run: >
-          helm upgrade --install optimusq -n demo --set deployment.tag=master .helm
+          helm upgrade --install optimusq -n demo --set deployment.tag=master helm
 
 
 
