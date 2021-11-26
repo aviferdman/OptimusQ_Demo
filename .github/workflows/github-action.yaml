@@ -42,13 +42,13 @@ jobs:
           resource-group: OptimusQ_demo
 
       - uses: azure/k8s-bake@v1
-      with:
-        renderEngine: 'helm3'
-        helmChart: './helm' 
-        overrideFiles: './helm/values.yaml'
-        overrides: |     
-          deployment.tag:${{ steps.meta.outputs.tags }}
-        releaseName: optimusq
-      id: bake
+        with:
+          renderEngine: 'helm2'
+          helmChart: './helm' 
+          overrideFiles: './helm/values.yaml'
+          overrides: |     
+            deployment.tag:${{ steps.meta.outputs.tags }}
+          releaseName: optimusq
+        id: bake
 
       
