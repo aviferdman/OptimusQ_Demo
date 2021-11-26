@@ -40,3 +40,13 @@ jobs:
           creds: '${{ secrets.AZURE_CREDENTIALS }}'
           cluster-name: OptimusQ
           resource-group: OptimusQ_demo
+
+      - name: deploy postgres to cluster
+        uses: wahyd4/kubectl-helm-action@master
+        env:
+          KUBE_CONFIG_DATA: ${{ secrets.KUBECONFIG }}
+        with:
+          args: |
+            helm upgrade --install optimusq -n demo --set deployment.tag=${{ steps.meta.outputs.tags }} .helm
+
+      
