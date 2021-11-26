@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{$.Values.deployment.repository}}
+  labels:
+    app: {{$.Values.deployment.repository}}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{$.Values.deployment.repository}}
+  template:
+    metadata:
+      labels:
+        app: {{$.Values.deployment.repository}}
+    spec:
+      containers:
+      - name: {{$.Values.deployment.repository}}
+        image: aviferdman/{{$.Values.deployment.repository}}_demo:{{$.Values.deployment.tag}}
+        ports:
+        - containerPort: 80
