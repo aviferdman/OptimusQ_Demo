@@ -18,6 +18,7 @@ jobs:
       - name: Set outputs
         id: vars
         run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
+        
       - name: Check outputs
         run: echo ${{ steps.vars.outputs.sha_short }}
       
@@ -38,7 +39,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: $(${{ steps.vars.outputs.sha_short }} | cut -c1-7)
+          tags: ${{ steps.vars.outputs.sha_short::8}}
           labels: ${{ steps.meta.outputs.labels }}
 
       - uses: actions/checkout@v2       
@@ -49,7 +50,7 @@ jobs:
           cluster-name: OptimusQ
           resource-group: OptimusQ_demo
       - run: >
-          helm upgrade --install optimusq -n demo --set deployment.tag=$(${{ steps.vars.outputs.sha_short }} | cut -c1-7) helm
+          helm upgrade --install optimusq -n demo --set deployment.tag=${{ steps.vars.outputs.sha_short::8}} helm
 
 
 
