@@ -11,6 +11,12 @@ jobs:
   push_to_registry:
     name: Push Docker image to Docker Hub
     runs-on: ubuntu-latest
+
+    build:
+      runs-on: ubuntu-latest
+      env:
+        SHA8: ${GITHUB_SHA::8}
+
     steps:
       - name: Check out the repo
         uses: actions/checkout@v2
@@ -39,7 +45,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
+          tags: $SHA8
           labels: ${{ steps.meta.outputs.labels }}
 
       - uses: actions/checkout@v2       
@@ -50,7 +56,7 @@ jobs:
           cluster-name: OptimusQ
           resource-group: OptimusQ_demo
       - run: >
-          helm upgrade --install optimusq -n demo --set deployment.tag=${{ steps.meta.outputs.tags }} helm
+          helm upgrade --install optimusq -n demo --set deployment.tag=$SHA8 helm
 
 
 
