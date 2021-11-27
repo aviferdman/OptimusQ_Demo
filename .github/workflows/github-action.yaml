@@ -35,7 +35,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
+          tags: ${SHORT_SHA}
           labels: ${{ steps.meta.outputs.labels }}
 
       - uses: actions/checkout@v2       
@@ -46,7 +46,7 @@ jobs:
           cluster-name: OptimusQ
           resource-group: OptimusQ_demo
       - run: >
-          helm upgrade --install optimusq -n demo --set deployment.tag=${{ steps.meta.outputs.tags }} helm
+          helm upgrade --install optimusq -n demo --set deployment.tag=${SHORT_SHA} helm
 
 
 
