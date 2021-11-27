@@ -11,18 +11,10 @@ jobs:
   push_to_registry:
     name: Push Docker image to Docker Hub
     runs-on: ubuntu-latest
-    
     steps:
       - name: Check out the repo
         uses: actions/checkout@v2
       
-      - name: Declare some variables
-        id: vars
-        shell: bash
-        run: |
-          echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
-          echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
-
       - name: Log in to Docker Hub
         uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
         with:
@@ -40,7 +32,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ steps.vars.outputs.sha_short }}
+          tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
       - uses: actions/checkout@v2       
@@ -51,7 +43,7 @@ jobs:
           cluster-name: OptimusQ
           resource-group: OptimusQ_demo
       - run: >
-          helm upgrade --install optimusq -n demo --set deployment.tag=${{ steps.vars.outputs.sha_short }} helm
+          helm upgrade --install optimusq -n demo --set deployment.tag=${{ steps.meta.outputs.tags }} helm
 
 
 
