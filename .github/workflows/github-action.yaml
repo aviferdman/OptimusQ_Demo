@@ -39,7 +39,6 @@ jobs:
         with:
           context: .
           push: true
-          tag_with_sha: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
@@ -51,7 +50,7 @@ jobs:
           cluster-name: OptimusQ
           resource-group: OptimusQ_demo
       - run: >
-          helm upgrade --install optimusq -n demo --set deployment.tag=${{ github.sha }} helm
+          helm upgrade --install optimusq -n demo --set deployment.tag=${{ steps.meta.outputs.tags }} helm
 
 
 
